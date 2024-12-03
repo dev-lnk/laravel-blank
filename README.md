@@ -162,3 +162,4 @@ return Application::configure(basePath: dirname(__DIR__))
 nice -n 10 php /var/www/app/artisan queue:work --queue=default --tries=3 --verbose --timeout=30 --sleep=3 --max-jobs=1000 --max-time=3600
 ```
 - Many commands to speed up development and work with docker can be found in the `Makefile`
+- If you don't need Docker, remove: `/docker`, `docker-compose.yml`, `Makefile`. Convert `.env` to standard Laravel form
