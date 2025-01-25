@@ -124,7 +124,7 @@ class RouteServiceProvider extends ServiceProvider
     }
 }
 ```
-- Installed and configured phpstan (level 5).
+- Installed and configured phpstan (max level).
 - Installed and configured TypeScript, used instead of JavaScript.
 
 The final `bootstrap/app.php` file looks like this:
