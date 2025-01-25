@@ -157,6 +157,16 @@ return Application::configure(basePath: dirname(__DIR__))
 - Run stat analysis and tests using the command `make test`.
 
 ## Docker
+
+### Images
+
+- php:8.4.1-fpm
+- mysql:8.0.33
+- nginx:1.25.4-alpine
+- node:21.7.1-alpine3.18
+- redis:7.0.11-alpine
+
+### Other
 - In the php container there is a supervisor process with queues
 ```shell
 nice -n 10 php /var/www/app/artisan queue:work --queue=default --tries=3 --verbose --timeout=30 --sleep=3 --max-jobs=1000 --max-time=3600

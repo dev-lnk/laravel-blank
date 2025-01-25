@@ -1,4 +1,4 @@
-FROM php:8.3.4-fpm AS php
+FROM php:8.4.1-fpm AS php
 
 WORKDIR /var/www/app
 
@@ -28,7 +28,7 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 RUN pecl install redis
 
-COPY --from=composer:2.5.8 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.8.5 /usr/bin/composer /usr/bin/composer
 
 RUN useradd -G www-data,root -u $uid -d /home/$user $user
 
