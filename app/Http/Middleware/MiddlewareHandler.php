@@ -8,7 +8,6 @@ use Illuminate\Foundation\Configuration\Middleware;
 
 class MiddlewareHandler
 {
-    /** @var array<string, class-string> */
     protected array $aliases = [
 
     ];
