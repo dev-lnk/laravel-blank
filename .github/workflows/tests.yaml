@@ -9,7 +9,7 @@ on:
             - '**'
 
 jobs:
-    moonshine-tests:
+    tests:
         runs-on: ubuntu-latest
 
         steps:
@@ -23,7 +23,7 @@ jobs:
             - name: Set up MySQL
               env:
                   DB_USERNAME: root
-                  DB_PASSWORD: 12345
+                  DB_PASSWORD: root
                   DB_DATABASE: my_database_test
               run: |
                   sudo /etc/init.d/mysql start
@@ -43,7 +43,7 @@ jobs:
                   echo "DB_PORT=3306" >> .env.testing
                   echo "DB_DATABASE=my_database_test" >> .env.testing
                   echo "DB_USERNAME=root" >> .env.testing
-                  echo "DB_PASSWORD=12345" >> .env.testing
+                  echo "DB_PASSWORD=root" >> .env.testing
 
             - name: Install Dependencies
               run: composer install --no-interaction --prefer-dist --optimize-autoloader
