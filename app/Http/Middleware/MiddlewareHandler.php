@@ -18,6 +18,7 @@ class MiddlewareHandler
         if ($this->aliases) {
             $middleware->alias($this->aliases);
         }
+
         return $middleware;
     }
 }

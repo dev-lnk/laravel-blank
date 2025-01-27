@@ -5,6 +5,7 @@
 /storage/*.key
 /storage/pail
 /vendor
+/fixer/vendor
 .env
 .env.backup
 .env.production
@@ -22,3 +23,4 @@ yarn-error.log
 /.vscode
 /.zed
 /docker/volumes
+.php-cs-fixer.cache
