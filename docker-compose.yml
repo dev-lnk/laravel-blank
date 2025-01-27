@@ -25,7 +25,7 @@ services:
       target: dev
     container_name: ${COMPOSE_PROJECT_NAME}-php
     volumes:
-      - ./:${APP_PATH}
+      - ./:/var/www/app
     depends_on:
       - db
       - redis
