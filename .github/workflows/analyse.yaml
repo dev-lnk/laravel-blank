@@ -1,4 +1,4 @@
-name: Run analyse
+name: analyse
 
 on:
     push:
