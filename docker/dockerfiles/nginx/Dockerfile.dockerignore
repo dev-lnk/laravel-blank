@@ -1,4 +1,4 @@
-/deploy/docker
-/deploy/Makefile
-/deploy/deploy.sh
-/deploy/docker-compose.yml
+/docker
+!/docker/dockerfiles/nginx/config
+/Makefile
+docker-compose.yml

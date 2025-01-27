@@ -1,6 +1,8 @@
 services:
   nginx:
     build:
+      args:
+        project_dir: ${APP_PATH}
       context: .
       dockerfile: ./docker/dockerfiles/nginx/Dockerfile
       target: dev
@@ -31,6 +33,8 @@ services:
   db:
     container_name: ${COMPOSE_PROJECT_NAME}-db
     build:
+      args:
+        db_root_pass: ${MYSQL_ROOT_PASS}
       context: .
       dockerfile: ./docker/dockerfiles/mysql/Dockerfile
     volumes:
@@ -60,4 +64,4 @@ services:
     profiles: ["npm"]
     entrypoint: ['npm']
     ports:
-      - ${VITE_PORT}:${VITE_PORT}
+      - "${APP_VITE_PORT}:5173"

@@ -1,11 +1,10 @@
 #!/bin/sh
 set -e
 
-composer install --no-scripts
-
 # Clear configurations to avoid caching issues in development
 php artisan migrate --force
 php artisan optimize:clear
+php artisan optimize
 
 exec /usr/bin/supervisord -c /etc/supervisor/supervisord.conf &
 

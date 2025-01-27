@@ -160,11 +160,12 @@ return Application::configure(basePath: dirname(__DIR__))
 
 ### Images
 
+- nginx:1.27.3-alpine
 - php:8.4.1-fpm
-- mysql:8.0.33
-- nginx:1.25.4-alpine
-- node:21.7.1-alpine3.18
+- mysql:9.2.0
 - redis:7.0.11-alpine
+- node:23.6.1-alpine3.18
+
 
 ### Other
 - In the php container there is a supervisor process with queues

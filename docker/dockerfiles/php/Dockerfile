@@ -39,11 +39,14 @@ COPY ./docker/dockerfiles/php/config/php-fpm.conf /usr/local/etc/php-fpm.d/www.c
 COPY ./docker/dockerfiles/php/config/supervisord.conf /etc/supervisor/supervisord.conf
 
 FROM php AS dev
-COPY ./docker/dockerfiles/php/config/php-dev.ini /usr/local/etc/php/conf.d/php.ini
-COPY . /var/www/app
-RUN if [[ -d '/var/www/app/storage' ]] ; then chmod -R 775 ./storage ./bootstrap/cache ; fi
 
-COPY ./docker/dockerfiles/php/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./docker/dockerfiles/php/config/php-dev.ini /usr/local/etc/php/conf.d/php.ini
+
+COPY . .
+
+RUN chmod -R 775 ./storage ./bootstrap/cache
+
+COPY ./docker/dockerfiles/php/config/entrypoint-dev.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["php-fpm"]
