@@ -35,12 +35,12 @@ RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
-COPY ./docker/dockerfiles/php/config/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 COPY ./docker/dockerfiles/php/config/supervisord.conf /etc/supervisor/supervisord.conf
 
 FROM php AS dev
 
 COPY ./docker/dockerfiles/php/config/php-dev.ini /usr/local/etc/php/conf.d/php.ini
+COPY ./docker/dockerfiles/php/config/php-fpm-dev.conf /usr/local/etc/php-fpm-dev.d/www.conf
 
 COPY . .
 
@@ -48,6 +48,33 @@ RUN chmod -R 775 ./storage ./bootstrap/cache
 
 COPY ./docker/dockerfiles/php/config/entrypoint-dev.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["php-fpm"]
+
+USER $user
+
+FROM php AS prod
+
+COPY ./docker/dockerfiles/php/config/php-prod.ini /usr/local/etc/php/conf.d/php.ini
+COPY ./docker/dockerfiles/php/config/php-fpm-prod.conf /usr/local/etc/php-fpm.d/www.conf
+
+COPY composer.json composer.lock ./
+
+RUN composer install --no-dev --no-scripts --prefer-dist --no-progress --no-interaction
+
+COPY . .
+
+RUN composer dump-autoload --optimize && \
+    composer check-platform-reqs
+
+RUN chmod -R 775 ./storage ./bootstrap/cache
+
+
+COPY ./docker/dockerfiles/php/config/entrypoint-prod.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+RUN rm -rf /docker
+
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["php-fpm"]
 
