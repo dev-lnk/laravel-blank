@@ -46,10 +46,10 @@ composer-update:
 	docker exec $(app) composer update
 composer-du:
 	docker exec $(app) composer du
-composer-phpstan:
-	docker exec $(app) composer phpstan
 test:
 	docker exec $(app) composer test
+analyse:
+	docker exec $(app) composer analyse
 
 #npm
 npm:
