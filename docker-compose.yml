@@ -19,6 +19,8 @@ services:
       args:
         user: ${DOCKER_USER}
         uid: 1000
+        xdebug_idekey: ${XDEBUG_IDEKEY}
+        xdebug_client_port: ${XDEBUG_CLIENT_PORT}
         target: dev
       context: .
       dockerfile: ./docker/dockerfiles/php/Dockerfile
@@ -26,6 +28,8 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-php
     volumes:
       - ./:/var/www/app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - db
       - redis
@@ -66,7 +70,7 @@ services:
     ports:
       - "${APP_VITE_PORT}:5173"
 
-#  кон:
+#  scheduler:
 #    container_name: ${COMPOSE_PROJECT_NAME}-scheduler
 #    build:
 #      args:
@@ -80,8 +84,6 @@ services:
 #    restart: unless-stopped
 #    depends_on:
 #      - php
-#      - db
-#      - redis
 #
 #  worker:
 #    container_name: ${COMPOSE_PROJECT_NAME}-worker
@@ -96,5 +98,3 @@ services:
 #      - ./:${APP_PATH}
 #    depends_on:
 #      - php
-#      - db
-#      - redis

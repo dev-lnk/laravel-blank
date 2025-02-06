@@ -161,16 +161,12 @@ return Application::configure(basePath: dirname(__DIR__))
 ### Images
 
 - nginx:1.27.3-alpine
-- php:8.4.1-fpm
+- php:8.4.3-fpm (with xdebug)
 - mysql:9.2.0
 - redis:7.0.11-alpine
 - node:23.6.1-alpine3.18
 
-
 ### Other
-- In the php container there is a supervisor process with queues
-```shell
-nice -n 10 php /var/www/app/artisan queue:work --queue=default --tries=3 --verbose --timeout=30 --sleep=3 --max-jobs=1000 --max-time=3600
-```
 - Many commands to speed up development and work with docker can be found in the `Makefile`
 - If you don't need Docker, remove: `/docker`, `docker-compose.yml`, `Makefile`. Convert `.env` to standard Laravel form
+- To launch containers with `worker` and `scheduler`, delete comments on the corresponding blocks in `docker-compose.yml`
