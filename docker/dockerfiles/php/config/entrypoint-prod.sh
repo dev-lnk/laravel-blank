@@ -6,7 +6,5 @@ php artisan migrate --force
 php artisan optimize:clear
 php artisan optimize
 
-exec /usr/bin/supervisord -c /etc/supervisor/supervisord.conf &
-
 # Run the default command (e.g., php-fpm or bash)
 exec "$@"

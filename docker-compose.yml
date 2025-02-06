@@ -65,3 +65,36 @@ services:
     entrypoint: ['npm']
     ports:
       - "${APP_VITE_PORT}:5173"
+
+#  кон:
+#    container_name: ${COMPOSE_PROJECT_NAME}-scheduler
+#    build:
+#      args:
+#        user: ${DOCKER_USER}
+#        uid: 1000
+#      context: .
+#      dockerfile: ./docker/dockerfiles/php/Dockerfile
+#      target: scheduler
+#    volumes:
+#      - ./:${APP_PATH}
+#    restart: unless-stopped
+#    depends_on:
+#      - php
+#      - db
+#      - redis
+#
+#  worker:
+#    container_name: ${COMPOSE_PROJECT_NAME}-worker
+#    build:
+#      args:
+#        user: ${DOCKER_USER}
+#        uid: 1000
+#      context: .
+#      dockerfile: ./docker/dockerfiles/php/Dockerfile
+#      target: worker
+#    volumes:
+#      - ./:${APP_PATH}
+#    depends_on:
+#      - php
+#      - db
+#      - redis

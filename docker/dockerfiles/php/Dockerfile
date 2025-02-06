@@ -35,8 +35,6 @@ RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
-COPY ./docker/dockerfiles/php/config/supervisord.conf /etc/supervisor/supervisord.conf
-
 FROM php AS dev
 
 COPY ./docker/dockerfiles/php/config/php-dev.ini /usr/local/etc/php/conf.d/php.ini
@@ -53,7 +51,7 @@ CMD ["php-fpm"]
 
 USER $user
 
-FROM php AS prod
+FROM php AS build
 
 COPY ./docker/dockerfiles/php/config/php-prod.ini /usr/local/etc/php/conf.d/php.ini
 COPY ./docker/dockerfiles/php/config/php-fpm-prod.conf /usr/local/etc/php-fpm.d/www.conf
@@ -75,7 +73,13 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 RUN rm -rf /docker
 
+FROM build AS prod
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["php-fpm"]
 
-USER $user
+FROM build AS worker
+COPY ./docker/dockerfiles/php/config/supervisord.conf /etc/supervisor/supervisord.conf
+CMD ["/bin/sh", "-c", "supervisord -c /etc/supervisor/supervisord.conf"]
+
+FROM build AS scheduler
+CMD ["/bin/sh", "-c", "nice -n 10 sleep 60 && php /var/www/app/artisan schedule:run --verbose --no-interaction"]
