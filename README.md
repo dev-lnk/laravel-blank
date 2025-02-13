@@ -3,6 +3,15 @@
 # Laravel 11 blank project
 
 ---
+| Included         |
+|------------------|
+| ✅ Basic setting  |
+| ✅ PhpStan        |
+| ✅ Php CS Fixer   |
+| ✅ TypeScript     |
+| ✅ Xdebug         |
+| ✅ Docker         |
+| ✅ GitHub actions |
 
 This is a blank Laravel 11 project set up to get started with development. What the setup includes:
 - Configured docker for local development.
