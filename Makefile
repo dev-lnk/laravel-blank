@@ -11,6 +11,9 @@ path := /var/www/app
 #docker
 build:
 	docker-compose -f docker-compose.yml up --build -d $(c)
+	@echo "Run command: make install"
+	@echo "$(APP_URL)"
+install: composer-install composer-update migrate npm-install npm-update npm-build test
 	@echo "$(APP_URL)"
 rebuild:
 	docker-compose up -d --force-recreate --no-deps --build $(r)

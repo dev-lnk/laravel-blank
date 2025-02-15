@@ -13,6 +13,14 @@
 | ✅ Docker         |
 | ✅ GitHub actions |
 
+## Installation
+- Run the git clone command `git clone git@github.com:dev-lnk/laravel-blank.git .`.
+- Copy the `.env.example` file and rename it to `.env`, customize the `#Docker` section to your needs.
+- Run the command `make build`, and then `make install`.
+- Check the application's operation using the link `http://localhost` or `http://localhost:${APP_WEB_PORT}`.
+- Run stat analysis and tests using the command `make test`.
+
+## About
 This is a blank Laravel 11 project set up to get started with development. What the setup includes:
 - Configured docker for local development.
 - Middleware is configured in a separate file.
@@ -158,19 +166,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->create();
 ```
 
-## Installation
-- Run the git clone command `git clone git@github.com:dev-lnk/laravel-blank.git .`.
-- Copy the `.env.example` file and rename it to `.env`, customize the `#Docker` section to your needs.
-- Run the `make build`.
-- Check the application's operation using the link `http://localhost` or `http://localhost:${APP_WEB_PORT}`.
-- Run stat analysis and tests using the command `make test`.
-
 ## Docker
 
 ### Images
 
 - nginx:1.27.3-alpine
-- php:8.4.3-fpm (with xdebug)
+- php:8.4.4-fpm (with xdebug)
 - mysql:9.2.0
 - redis:7.0.11-alpine
 - node:23.6.1-alpine3.18

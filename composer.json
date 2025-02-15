@@ -34,7 +34,7 @@
     },
     "scripts": {
         "analyse": "php -d memory_limit=512M vendor/bin/phpstan analyse -c phpstan.neon",
-        "test": "composer phpstan && php artisan test",
+        "test": "composer analyse && php artisan test",
         "fixer": "PHP_CS_FIXER_IGNORE_ENV=1 fixer/vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
