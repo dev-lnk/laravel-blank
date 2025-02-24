@@ -1,6 +1,6 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-# Laravel 11 blank project
+# Laravel 12 blank project
 
 ---
 | Included         |
@@ -21,7 +21,7 @@
 - Run stat analysis and tests using the command `make test`.
 
 ## About
-This is a blank Laravel 11 project set up to get started with development. What the setup includes:
+This is a blank Laravel 12 project set up to get started with development. What the setup includes:
 - Configured docker for local development.
 - Middleware is configured in a separate file.
 ```php

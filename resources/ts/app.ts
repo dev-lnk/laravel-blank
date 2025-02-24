@@ -1,6 +1,9 @@
+import './bootstrap';
+
 document.addEventListener("DOMContentLoaded", function(): void {
     const user = new User('test', 1)
     console.log(user)
+    console.log(user.getUserId())
 });
 
 class User {
@@ -17,7 +20,7 @@ class User {
         return this.name
     }
 
-    getUserId(): string {
-        return this.name
+    getUserId(): number {
+        return this.userId
     }
 }
