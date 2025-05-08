@@ -1,4 +1,4 @@
-FROM php:8.4.4-fpm AS php
+FROM php:8.4.6-fpm AS php
 
 WORKDIR /var/www/app
 
