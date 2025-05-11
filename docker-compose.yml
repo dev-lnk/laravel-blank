@@ -28,7 +28,7 @@ services:
     volumes:
       - ./:/var/www/app
       - ./docker/config/php/php.ini:/usr/local/etc/php/conf.d/php.ini
-      - ./docker/config/php/php-fpm.conf:/usr/local/etc/php-fpm-dev.d/www.conf
+      - ./docker/config/php/php-fpm.conf:/usr/local/etc/php-fpm.d/www.conf
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
