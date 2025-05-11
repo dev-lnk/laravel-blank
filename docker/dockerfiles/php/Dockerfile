@@ -1,4 +1,4 @@
-FROM php:8.4.6-fpm AS php
+FROM php:8.4.7-fpm AS php
 
 WORKDIR /var/www/app
 
@@ -37,12 +37,10 @@ RUN mkdir -p /home/$user/.composer && \
 
 FROM php AS dev
 
-COPY ./docker/dockerfiles/php/config/php-dev.ini /usr/local/etc/php/conf.d/php.ini
-COPY ./docker/dockerfiles/php/config/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
-COPY ./docker/dockerfiles/php/config/php-fpm-dev.conf /usr/local/etc/php-fpm-dev.d/www.conf
-
 ARG xdebug_idekey
 ARG xdebug_client_port
+
+COPY ./docker/config/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 RUN pecl install xdebug-3.4.1 && \
       docker-php-ext-enable xdebug && \
@@ -53,7 +51,7 @@ COPY . .
 
 RUN chmod -R 775 ./storage ./bootstrap/cache
 
-COPY ./docker/dockerfiles/php/config/entrypoint-dev.sh /usr/local/bin/entrypoint.sh
+COPY ./docker/config/php/entrypoint-dev.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["php-fpm"]
@@ -61,9 +59,6 @@ CMD ["php-fpm"]
 USER $user
 
 FROM php AS build
-
-COPY ./docker/dockerfiles/php/config/php-prod.ini /usr/local/etc/php/conf.d/php.ini
-COPY ./docker/dockerfiles/php/config/php-fpm-prod.conf /usr/local/etc/php-fpm.d/www.conf
 
 COPY composer.json composer.lock ./
 
@@ -84,7 +79,6 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["php-fpm"]
 
 FROM build AS worker
-COPY ./docker/dockerfiles/php/config/supervisord.conf /etc/supervisor/supervisord.conf
 RUN rm -rf /docker
 CMD ["/bin/sh", "-c", "supervisord -c /etc/supervisor/supervisord.conf"]
 

@@ -1,4 +1,4 @@
 /docker
-!/docker/dockerfiles/php/config
+!/docker/config/php
 /Makefile
 docker-compose.yml

@@ -1,8 +1,6 @@
 services:
   nginx:
     build:
-      args:
-        project_dir: ${APP_PATH}
       context: .
       dockerfile: ./docker/dockerfiles/nginx/Dockerfile
       target: dev
@@ -11,6 +9,7 @@ services:
       - "${APP_WEB_PORT}:80"
     volumes:
       - ./:${APP_PATH}
+      - ./docker/config/nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - php
 
@@ -28,6 +27,8 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-php
     volumes:
       - ./:/var/www/app
+      - ./docker/config/php/conf.d:/usr/local/etc/php/conf.d
+      - ./docker/config/php/php-fpm.conf:/usr/local/etc/php-fpm-dev.d/www.conf
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
@@ -43,10 +44,13 @@ services:
       dockerfile: ./docker/dockerfiles/mysql/Dockerfile
     volumes:
       - ./docker/volumes/mysql:/var/lib/mysql
+      - ./docker/config/mysql/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
+      - ./docker/dockerfiles/config/mysql/initdb.d:/docker-entrypoint-initdb.d
     ports:
       - "${APP_MYSQL_PORT}:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASS}
+      - MYSQL_DATABASE=${DB_DATABASE}
 
   redis:
     container_name: ${COMPOSE_PROJECT_NAME}-redis
@@ -70,31 +74,36 @@ services:
     ports:
       - "${APP_VITE_PORT}:5173"
 
-#  scheduler:
-#    container_name: ${COMPOSE_PROJECT_NAME}-scheduler
-#    build:
-#      args:
-#        user: ${DOCKER_USER}
-#        uid: 1000
-#      context: .
-#      dockerfile: ./docker/dockerfiles/php/Dockerfile
-#      target: scheduler
-#    volumes:
-#      - ./:${APP_PATH}
-#    restart: unless-stopped
-#    depends_on:
-#      - php
-#
-#  worker:
-#    container_name: ${COMPOSE_PROJECT_NAME}-worker
-#    build:
-#      args:
-#        user: ${DOCKER_USER}
-#        uid: 1000
-#      context: .
-#      dockerfile: ./docker/dockerfiles/php/Dockerfile
-#      target: worker
-#    volumes:
-#      - ./:${APP_PATH}
-#    depends_on:
-#      - php
+  scheduler:
+    container_name: ${COMPOSE_PROJECT_NAME}-scheduler
+    build:
+      args:
+        user: ${DOCKER_USER}
+        uid: 1000
+      context: .
+      dockerfile: ./docker/dockerfiles/php/Dockerfile
+      target: scheduler
+    volumes:
+      - ./:${APP_PATH}
+      - ./docker/config/php/conf.d:/usr/local/etc/php/conf.d
+      - ./docker/config/php/php-fpm.conf:/usr/local/etc/php-fpm-dev.d/www.conf
+    restart: unless-stopped
+    depends_on:
+      - php
+
+  worker:
+    container_name: ${COMPOSE_PROJECT_NAME}-worker
+    build:
+      args:
+        user: ${DOCKER_USER}
+        uid: 1000
+      context: .
+      dockerfile: ./docker/dockerfiles/php/Dockerfile
+      target: worker
+    volumes:
+      - ./:${APP_PATH}
+      - ./docker/config/php/supervisord.conf:/etc/supervisor/supervisord.conf
+      - ./docker/config/php/conf.d:/usr/local/etc/php/conf.d
+      - ./docker/config/php/php-fpm.conf:/usr/local/etc/php-fpm-dev.d/www.conf
+    depends_on:
+      - php
