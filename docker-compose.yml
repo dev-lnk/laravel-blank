@@ -27,7 +27,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-php
     volumes:
       - ./:/var/www/app
-      - ./docker/config/php/conf.d:/usr/local/etc/php/conf.d
+      - ./docker/config/php/php.ini:/usr/local/etc/php/conf.d/php.ini
       - ./docker/config/php/php-fpm.conf:/usr/local/etc/php-fpm-dev.d/www.conf
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -38,14 +38,12 @@ services:
   db:
     container_name: ${COMPOSE_PROJECT_NAME}-db
     build:
-      args:
-        db_root_pass: ${MYSQL_ROOT_PASS}
       context: .
       dockerfile: ./docker/dockerfiles/mysql/Dockerfile
     volumes:
-      - ./docker/volumes/mysql:/var/lib/mysql
+      - db-data:/var/lib/mysql
       - ./docker/config/mysql/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
-      - ./docker/dockerfiles/config/mysql/initdb.d:/docker-entrypoint-initdb.d
+      - ./docker/config/mysql/init:/docker-entrypoint-initdb.d
     ports:
       - "${APP_MYSQL_PORT}:3306"
     environment:
@@ -56,7 +54,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-redis
     image: redis:7.0.11-alpine
     volumes:
-      - ./docker/volumes/redis:/data
+      - redis-data:/data
     ports:
       - "${APP_REDIS_PORT}:6379"
 
@@ -85,7 +83,7 @@ services:
       target: scheduler
     volumes:
       - ./:${APP_PATH}
-      - ./docker/config/php/conf.d:/usr/local/etc/php/conf.d
+      - ./docker/config/php/php.ini:/usr/local/etc/php/conf.d/php.ini
       - ./docker/config/php/php-fpm.conf:/usr/local/etc/php-fpm-dev.d/www.conf
     restart: unless-stopped
     depends_on:
@@ -103,7 +101,11 @@ services:
     volumes:
       - ./:${APP_PATH}
       - ./docker/config/php/supervisord.conf:/etc/supervisor/supervisord.conf
-      - ./docker/config/php/conf.d:/usr/local/etc/php/conf.d
+      - ./docker/config/php/php.ini:/usr/local/etc/php/conf.d/php.ini
       - ./docker/config/php/php-fpm.conf:/usr/local/etc/php-fpm-dev.d/www.conf
     depends_on:
       - php
+
+volumes:
+  db-data:
+  redis-data:
