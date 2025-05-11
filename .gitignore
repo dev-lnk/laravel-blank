@@ -22,5 +22,4 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-/docker/volumes
 .php-cs-fixer.cache
