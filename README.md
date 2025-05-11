@@ -171,8 +171,8 @@ return Application::configure(basePath: dirname(__DIR__))
 ### Images
 
 - nginx:1.27.3-alpine
-- php:8.4.6-fpm (with xdebug)
-- mysql:9.2.0
+- php:8.4.7-fpm (with xdebug)
+- mysql:9.3.0
 - redis:7.0.11-alpine
 - node:23.6.1-alpine3.18
 
