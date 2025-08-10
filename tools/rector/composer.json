@@ -1,5 +1,9 @@
 {
     "require-dev": {
-        "rector/rector": "^2.1"
+        "rector/rector": "^2.1.2"
+    },
+    "config": {
+        "bump-after-update": "dev",
+        "sort-packages": true
     }
 }

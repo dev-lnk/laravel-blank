@@ -16,4 +16,5 @@ return RectorConfig::configure()
     ->withPhpSets()
     ->withSkip([
         StringableForToStringRector::class,
+        AddOverrideAttributeToOverriddenMethodsRector::class,
     ]);
