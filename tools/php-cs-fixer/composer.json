@@ -1,0 +1,9 @@
+{
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.85.1"
+    },
+    "config": {
+        "bump-after-update": "dev",
+        "sort-packages": true
+    }
+}

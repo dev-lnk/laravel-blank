@@ -53,7 +53,7 @@ services:
       - MYSQL_DATABASE=${DB_DATABASE}
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
-      timeout: 20s
+      timeout: 10s
       retries: 10
 
   redis:

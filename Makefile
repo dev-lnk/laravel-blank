@@ -7,6 +7,7 @@ nginx := $(COMPOSE_PROJECT_NAME)-nginx
 mysql := $(COMPOSE_PROJECT_NAME)-mysql
 app-npm := npm
 path := /var/www/app
+run := docker exec $(app)
 
 #docker
 .PHONY: init
@@ -64,40 +65,60 @@ it-mysql:
 
 .PHONY: migrate
 migrate:
-	docker exec $(app) php $(path)/artisan migrate
+	$(run) php $(path)/artisan migrate
 
 .PHONY: migrate-rollback
 migrate-rollback:
-	docker exec $(app) php $(path)/artisan migrate:rollback
+	$(run) php $(path)/artisan migrate:rollback
 
 .PHONY: migrate-fresh
 migrate-fresh:
-	docker exec $(app) php $(path)/artisan migrate:fresh --seed
+	$(run) php $(path)/artisan migrate:fresh --seed
 
 .PHONY: migration
 migration:
-	docker exec $(app) php $(path)/artisan make:migration $(m)
+	$(run) php $(path)/artisan make:migration $(m)
 
 #composer
 .PHONY: composer-install
 composer-install:
-	docker exec $(app) composer install
+	$(run) composer install
 
 .PHONY: composer-update
 composer-update:
-	docker exec $(app) composer update
+	$(run) composer update
 
 .PHONY: composer-du
 composer-du:
-	docker exec $(app) composer du
+	$(run) composer du
 
+#Tools
 .PHONY: test
 test:
-	docker exec $(app) composer test
+	$(run) php artisan test
+
+.PHONY: rector
+rector:
+	$(run) tools/rector/vendor/bin/rector process --dry-run
+
+.PHONY: fix-rector
+fix-rector:
+	$(run) tools/rector/vendor/bin/rector process
 
 .PHONY: analyse
 analyse:
-	docker exec $(app) composer analyse
+	$(run) php -d memory_limit=-1 tools/larastan/vendor/bin/phpstan analyse -c phpstan.neon
+
+.PHONY: fixcs
+fixcs:
+	$(run) tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php
+
+.PHONY: lint
+lint:
+	$(run) tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run
+
+.PHONY: check
+check: lint rector analyse test
 
 #npm
 .PHONY: npm

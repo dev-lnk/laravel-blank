@@ -35,4 +35,5 @@ return (new PhpCsFixer\Config())
             'spacing' => 'one'
         ]
     ])
-    ->setFinder($finder);
+    ->setFinder($finder)
+    ->setCacheFile(__DIR__ . '/var/' . basename(__FILE__) . '.cache');

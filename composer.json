@@ -14,9 +14,9 @@
         "laravel/tinker": "^2.10.1"
     },
     "require-dev": {
+        "bamarni/composer-bin-plugin": "^1.8",
         "barryvdh/laravel-debugbar": "^3.15",
         "fakerphp/faker": "^1.23",
-        "larastan/larastan": "^3.0",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.41",
@@ -37,9 +37,6 @@
         }
     },
     "scripts": {
-        "analyse": "php -d memory_limit=-1 vendor/bin/phpstan analyse",
-        "test": "composer analyse && php artisan test",
-        "fixer": "PHP_CS_FIXER_IGNORE_ENV=1 fixer/vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
@@ -61,6 +58,11 @@
         ]
     },
     "extra": {
+        "bamarni-bin": {
+            "bin-links": false,
+            "forward-command": true,
+            "target-directory": "tools"
+        },
         "laravel": {
             "dont-discover": []
         }
@@ -70,6 +72,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
+            "bamarni/composer-bin-plugin": true,
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
         }

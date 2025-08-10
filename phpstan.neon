@@ -1,5 +1,5 @@
 includes:
-    - vendor/larastan/larastan/extension.neon
+    - tools/larastan/vendor/larastan/larastan/extension.neon
 
 parameters:
     editorUrl: 'anything'
