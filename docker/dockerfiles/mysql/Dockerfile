@@ -1,3 +1,3 @@
-FROM mysql:9.3
+FROM mysql:9.4
 
 RUN rm -rf /docker

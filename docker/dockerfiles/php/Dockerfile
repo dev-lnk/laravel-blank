@@ -41,17 +41,17 @@ ARG xdebug_client_port
 
 COPY ./docker/config/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
-RUN pecl install xdebug-3.4.1 && \
+RUN pecl install xdebug-3.4.5 && \
       docker-php-ext-enable xdebug && \
       sed -i "s/^xdebug\.idekey=.*/xdebug.idekey=${xdebug_idekey}/" /usr/local/etc/php/conf.d/xdebug.ini && \
       sed -i "s/^xdebug\.client_port=.*/xdebug.client_port=${xdebug_client_port}/" /usr/local/etc/php/conf.d/xdebug.ini
 
 COPY . .
 
-RUN chmod -R 775 ./storage ./bootstrap/cache
-
 COPY ./docker/config/php/entrypoint-dev.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+RUN chmod -R 775 ./storage ./bootstrap/cache
 
 USER app-user
 
