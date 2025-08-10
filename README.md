@@ -175,8 +175,8 @@ return Application::configure(basePath: dirname(__DIR__))
 - nginx:1.29-alpine
 - php:8.4-fpm (with xdebug)
 - mysql:9.4
-- redis:7.0.11-alpine
-- node:24-alpine3.22
+- redis:8.2.0-alpine
+- node:24.5-alpine3.22
 
 ### Other
 - Many commands to speed up development and work with docker can be found in the `Makefile`

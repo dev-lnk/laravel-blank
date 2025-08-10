@@ -27,7 +27,7 @@ install: composer-install composer-update migrate-fresh npm-install npm-update n
 rebuild:
 	docker compose down --remove-orphans
 	IMAGES=$$(docker images --filter=reference="$(COMPOSE_PROJECT_NAME)*:*" -q); \
-	if [ -n "$$IMAGES" ]; then docker rmi $$IMAGES; else echo "No images to remove"; fi
+	if [ -n "$$IMAGES" ]; then docker rmi $$IMAGES -f; else echo "No images to remove"; fi
 	make build
 
 .PHONY: rebuild-app

@@ -58,7 +58,7 @@ services:
 
   redis:
     container_name: ${COMPOSE_PROJECT_NAME}-redis
-    image: redis:7.0.11-alpine
+    image: redis:8.2.0-alpine
     volumes:
       - redis-data:/data
     ports:
