@@ -65,19 +65,19 @@ it-mysql:
 
 .PHONY: migrate
 migrate:
-	$(run) php $(path)/artisan migrate
+	$(run) php artisan migrate
 
 .PHONY: migrate-rollback
 migrate-rollback:
-	$(run) php $(path)/artisan migrate:rollback
+	$(run) php artisan migrate:rollback
 
 .PHONY: migrate-fresh
 migrate-fresh:
-	$(run) php $(path)/artisan migrate:fresh --seed
+	$(run) php artisan migrate:fresh --seed
 
 .PHONY: migration
 migration:
-	$(run) php $(path)/artisan make:migration $(m)
+	$(run) php artisan make:migration $(m)
 
 #composer
 .PHONY: composer-install
@@ -118,7 +118,7 @@ lint:
 	$(run) tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run
 
 .PHONY: check
-check: lint rector analyse test
+check: rector lint analyse test
 
 #npm
 .PHONY: npm

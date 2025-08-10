@@ -6,12 +6,14 @@
 | Included         |
 |------------------|
 | ✅ Basic setting  |
-| ✅ PhpStan        |
-| ✅ Php CS Fixer   |
+| ✅ Phpstan        |
+| ✅ PHP CS Fixer   |
+| ✅ Rector         |
 | ✅ TypeScript     |
 | ✅ Xdebug         |
 | ✅ Docker         |
 | ✅ GitHub actions |
+| ✅ Makefile       |
 
 ## Installation
 - Run the git clone command `git clone git@github.com:dev-lnk/laravel-blank.git .`.
