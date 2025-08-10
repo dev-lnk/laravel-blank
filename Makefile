@@ -19,7 +19,7 @@ build:
 	@echo "$(APP_URL)"
 
 .PHONY: install
-install: composer-install composer-update migrate-fresh npm-install npm-update npm-build test
+install: composer-install composer-update migrate-fresh npm-install npm-update npm-build restart-worker test
 	@echo "$(APP_URL)"
 
 .PHONY: rebuild
@@ -32,6 +32,10 @@ rebuild:
 .PHONY: rebuild-app
 rebuild-app:
 	docker-compose up -d --force-recreate --no-deps --build php
+
+.PHONY: restart-worker
+restart-worker:
+	docker restart $(COMPOSE_PROJECT_NAME)-worker
 
 .PHONY: up
 up:
