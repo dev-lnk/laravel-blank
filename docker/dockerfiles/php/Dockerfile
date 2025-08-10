@@ -1,8 +1,8 @@
-FROM php:8.4.7-fpm AS php
+FROM php:8.4-fpm AS php
 
 WORKDIR /var/www/app
 
-ARG user
+ARG gid
 ARG uid
 
 RUN apt-get update && apt-get install -y \
@@ -31,10 +31,8 @@ RUN pecl install redis \
 
 COPY --from=composer:2.8.5 /usr/bin/composer /usr/bin/composer
 
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-
-RUN mkdir -p /home/$user/.composer && \
-    chown -R $user:$user /home/$user
+RUN groupadd -g ${gid} app-user && useradd -u ${uid} -g app-user -m -s /bin/bash app-user
+RUN mkdir -p /var/www/app && chown -R app-user:app-user /var/www/app
 
 FROM php AS dev
 
@@ -54,10 +52,11 @@ RUN chmod -R 775 ./storage ./bootstrap/cache
 
 COPY ./docker/config/php/entrypoint-dev.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+USER app-user
+
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["php-fpm"]
-
-USER $user
 
 FROM php AS build
 
@@ -73,7 +72,7 @@ RUN composer dump-autoload --optimize && \
 RUN chmod -R 775 ./storage ./bootstrap/cache
 
 FROM build AS prod
-COPY ./docker/dockerfiles/php/config/entrypoint-prod.sh /usr/local/bin/entrypoint.sh
+COPY ./docker/config/php/entrypoint-prod.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN rm -rf /docker
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

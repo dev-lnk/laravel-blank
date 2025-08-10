@@ -16,8 +16,8 @@ services:
   php:
     build:
       args:
-        user: ${DOCKER_USER}
-        uid: 1000
+        gid: ${GID}
+        uid: ${UID}
         xdebug_idekey: ${XDEBUG_IDEKEY}
         xdebug_client_port: ${XDEBUG_CLIENT_PORT}
         target: dev
@@ -32,8 +32,10 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   db:
     container_name: ${COMPOSE_PROJECT_NAME}-db
@@ -49,6 +51,10 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASS}
       - MYSQL_DATABASE=${DB_DATABASE}
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
 
   redis:
     container_name: ${COMPOSE_PROJECT_NAME}-redis
@@ -57,6 +63,11 @@ services:
       - redis-data:/data
     ports:
       - "${APP_REDIS_PORT}:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 1s
+      timeout: 3s
+      retries: 30
 
   npm:
     build:
@@ -76,8 +87,8 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-scheduler
     build:
       args:
-        user: ${DOCKER_USER}
-        uid: 1000
+        gid: ${GID}
+        uid: ${UID}
       context: .
       dockerfile: ./docker/dockerfiles/php/Dockerfile
       target: scheduler
@@ -85,7 +96,7 @@ services:
       - ./:${APP_PATH}
       - ./docker/config/php/php.ini:/usr/local/etc/php/conf.d/php.ini
       - ./docker/config/php/php-fpm.conf:/usr/local/etc/php-fpm-dev.d/www.conf
-    restart: unless-stopped
+    restart: on-failure
     depends_on:
       - php
 
@@ -93,8 +104,8 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-worker
     build:
       args:
-        user: ${DOCKER_USER}
-        uid: 1000
+        gid: ${GID}
+        uid: ${UID}
       context: .
       dockerfile: ./docker/dockerfiles/php/Dockerfile
       target: worker
@@ -103,6 +114,7 @@ services:
       - ./docker/config/php/supervisord.conf:/etc/supervisor/supervisord.conf
       - ./docker/config/php/php.ini:/usr/local/etc/php/conf.d/php.ini
       - ./docker/config/php/php-fpm.conf:/usr/local/etc/php-fpm-dev.d/www.conf
+    restart: on-failure
     depends_on:
       - php
 
