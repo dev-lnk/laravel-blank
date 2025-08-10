@@ -9,6 +9,9 @@ app-npm := npm
 path := /var/www/app
 
 #docker
+.PHONY: init
+init: build install
+
 .PHONY: build
 build:
 	docker-compose -f docker-compose.yml up --build -d $(c)
