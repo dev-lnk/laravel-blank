@@ -1,6 +1,6 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-# Laravel 12 blank project
+# Laravel 13 blank project
 
 ---
 | Included         |
@@ -174,8 +174,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
 - nginx:1.29-alpine
 - php:8.4-fpm (with xdebug)
-- mysql:9.4
-- redis:8.2.0-alpine
+- mysql:9.6
+- redis:8.6.1-alpine
 - node:24.5-alpine3.22
 
 ### Other
