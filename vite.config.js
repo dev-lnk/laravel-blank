@@ -4,12 +4,6 @@ import tailwindcss from '@tailwindcss/vite';
 import checker from "vite-plugin-checker";
 
 export default defineConfig({
-    server: {
-        host: '0.0.0.0',
-        hmr: {
-            host: 'localhost',
-        }
-    },
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/ts/app.ts'],
@@ -18,4 +12,13 @@ export default defineConfig({
         tailwindcss(),
         checker({ typescript: true })
     ],
+    server: {
+        host: '0.0.0.0',
+        hmr: {
+            host: 'localhost',
+        },
+        watch: {
+            ignored: ['**/storage/framework/views/**'],
+        },
+    },
 });
